@@ -20,7 +20,7 @@ typedef struct date{
 }date;
 
 typedef struct Joueur{
-    char id[20];
+    int id;
     char nom[20];
     char prenom[20];
     char numeroMaillot[10];
@@ -32,13 +32,26 @@ typedef struct Joueur{
 }Joueur;
 Joueur Equipe[MaxJoueur];
 int CntJoueur = 0; // le nombre des joueurs enregistre dans l'equipe
-
+int idplayer = 1;
+// fonction qui genere un id pour chaque player(pas des doublons)
+int GenerateurID(){
+    return idplayer ++;
+}
 void AjouterJoueur(){
     int choix;
     printf("\n1.Ajoute simple. \n2.Ajuote multiple.\n");
     printf("Votre choix : ");
     scanf("%d",&choix);
+    switch (choix)
+    {
+    case 1:
+        printf("Entrer le nom :");
+        scanf("")
+        break;
     
+    default:
+        break;
+    }
     
 }
 
