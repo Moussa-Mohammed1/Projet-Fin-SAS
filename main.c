@@ -43,6 +43,7 @@ void Majuscule(char str[]) {
         str[j++] = str[i++];
         c ++;
     }
+    while(str[c]){str[c--];}
     str[j] = '\0';
     if (str[0] >= 'a' && str[0] <= 'z') {
         str[0] = str[0] - 32;
@@ -408,8 +409,6 @@ validAffichage:
         }
     }
 }
-
-
 void ModifierJoueur(){
     repeat:
     if(CntJoueur == 0){printf("\nAucun joueur a modifier !\n");}
@@ -520,17 +519,15 @@ void supprimerJoueur(){
         {
             if (Equipe[i].ID == targetID)
             {
-                exist =i;
-                printf("\nJoueur exist !ID : %d \nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %d %d %d\nStatus : %s \n", Equipe[i].ID, Equipe[i].nom, 
-                    Equipe[i].prenom, Equipe[i].numeroMaillot, Equipe[i].poste, Equipe[i].age, Equipe[i].buts, Equipe[i].dateInscription.day, Equipe[i].dateInscription.mounth, Equipe[i].dateInscription.year);
+                exist = i;
                 break;
             }
         }
         if (exist == -1){
-       
             printf("l'ID %d ne correspond au aucun joueur !",targetID);
         }
-        else{
+        else {
+            printf("\nL'identifient %d correspond au joueur %s\n", Equipe[exist].ID, Equipe[exist].nom);
         confirmation:
             int choix002;
             printf("Voulez vous vraiment supprimer ce joueur?\n1- continue \t2- annuler ");
@@ -545,18 +542,122 @@ void supprimerJoueur(){
                     Equipe[i]=Equipe[i + 1];
                 }
                 CntJoueur --;
-                printf("l'identifient %d est supprime avec success !\n");
+                printf("\n--------------------------------------------------\n");
+                printf("l'identifient %d est supprime avec success !\n",targetID);
                 break;
             case 2:
-            
                 break;
             default:
                 printf("\nChoix invalide !\n");
                 goto confirmation;
             }
         }
-
     }
+}
+
+void rechercheJoueur(){
+    if (CntJoueur == 0){
+        printf("Aucun joueur enregistrer dans l'equipe");
+    }
+    else{
+        search:
+        int choix003;
+        printf("\n1- Rechercher un joueur par Identifiant.");
+        printf("\n2- Rechercher un joueur par Nom.\n");
+        printf("Votre choix : ");
+        scanf("%d",&choix003);
+        getchar();
+        switch (choix003)
+        {
+        case 1:
+            int IDrech;
+            printf("Entrer l'identifient du joueur a rechercher :");
+            scanf("%d",&IDrech);
+            getchar();
+            int IDindex ;
+            for (int i = 0; i < CntJoueur; i++){
+                if (Equipe[i].ID == IDrech)
+                {
+                    IDindex = i;
+                    break;
+                }
+            }
+            
+            if (IDindex == -1){
+                printf("\nAucun joueur correspond au identifient entre !\n");
+            }
+            else{   
+                printf("Joueur trouve !\n");
+                printf("--------------------------------------------------\n");
+                printf("ID : %d\n",Equipe[IDindex].ID);
+                printf("Nom et Prenom : %s %s \n",Equipe[IDindex].nom, Equipe[IDindex].prenom);
+                printf("Numero maillot : %d\n",Equipe[IDindex].numeroMaillot);
+                printf("Poste : %s\n",Equipe[IDindex].poste);
+                printf("Age : %d\n",Equipe[IDindex].age);
+                printf("Nombre des buts marque : %d\n",Equipe[IDindex].buts);
+                printf("Date d'inscription : %d %d %d \n",Equipe[IDindex].dateInscription.day, Equipe[IDindex].dateInscription.mounth, Equipe[IDindex].dateInscription.year);
+                printf("Status : %s\n",Equipe[IDindex].status);
+                printf("--------------------------------------------------\n");
+            }
+            break;
+        case 2:
+            printf("\nEntrer le nom du joueur a rechercher :");
+            fgets(rechercheJ, sizeof(rechercheJ), stdin);
+            rechercheJ[strcspn(rechercheJ, "\n")]='\0';
+            Majuscule(rechercheJ);
+            int NomIndex;
+            for (int  i = 0; i < CntJoueur; i++)
+            {
+                if (strcmp(Equipe[i].nom, rechercheJ)== 0)
+                {
+                    NomIndex = i;
+                    break;
+                }
+            }
+            
+            if (NomIndex == -1){
+                printf("\nAucun joueur correspond au nom entre !\n");
+            }
+            else{   
+                printf("Joueur trouve !\n");
+                printf("--------------------------------------------------\n");
+                printf("ID : %d\n",Equipe[NomIndex].ID);
+                printf("Nom et Prenom : %s %s \n",Equipe[NomIndex].nom, Equipe[NomIndex].prenom);
+                printf("Numero maillot : %d\n",Equipe[NomIndex].numeroMaillot);
+                printf("Poste : %s\n",Equipe[NomIndex].poste);
+                printf("Age : %d\n",Equipe[NomIndex].age);
+                printf("Nombre des buts marque : %d\n",Equipe[NomIndex].buts);
+                printf("Date d'inscription : %d %d %d \n",Equipe[NomIndex].dateInscription.day, Equipe[NomIndex].dateInscription.mounth, Equipe[NomIndex].dateInscription.year);
+                printf("Status : %s\n",Equipe[NomIndex].status);
+                printf("--------------------------------------------------\n");
+            }
+            break;
+        default:
+            printf("\nEntrer un choix valide !\n");
+            goto search;
+        }
+    }
+}
+void AfficheNbrtotale(){
+    if(CntJoueur == 0)
+    {
+        printf("\nAucun joueur dans l'equipe !\n");
+    }
+    else{
+        printf("\nLe nombre totale des joueurs dans l'equipe est : %d\n", CntJoueur + 1);
+    }
+}
+void Agemoyenne(){
+    int SommeAge = 0;
+    float AgeMoyenne;
+    for (int i = 0; i < CntJoueur; i++){
+        SommeAge += Equipe[i].age;
+    }
+    AgeMoyenne = SommeAge/ (CntJoueur + 1);
+    printf("\nAfficher l'age moyen des joueurs :%.2f \n",AgeMoyenne);
+}
+void FiltrerParButs(){
+    
 }
 int main(){
 // fake data dor testing
@@ -570,12 +671,10 @@ Equipe[CntJoueur++] = (Player){1007, "Yassir", "Amar", 9, poste3, 22, 4, {30, 6,
 Equipe[CntJoueur++] = (Player){1008, "Nabil", "Ayoub", 6, poste4, 26, 10, {10, 5, 2020}, status1};
 Equipe[CntJoueur++] = (Player){1009, "Rania", "Salma", 7, poste4, 23, 7, {2, 9, 2021}, status2};
 Equipe[CntJoueur++] = (Player){1010, "Leila", "Meriem", 10, poste4, 21, 6, {12, 12, 2021}, status1};
+rechercheJoueur();
 supprimerJoueur();
 AjouterJoueur();
 ModifierJoueur();
 AfficherListe();
     return 0;
 }
-
-
-
