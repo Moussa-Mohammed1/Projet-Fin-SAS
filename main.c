@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #define poste1 "Gardien"
 #define poste2 "Defenseur"
@@ -21,23 +20,21 @@ typedef struct Player{
     char poste[20];
     int age;
     int buts;
-    char dateInscription[11];
     char status[20];
 }Player;
 // declaration d'un tableau des joueurs
 Player Equipe[MaxJoueur];
+int Cnttitulaire = 0;
 char rechercheJ[20];
 int CntJoueur = 0; // le nombre des joueurs enregistre dans l'equipe
-int idplayer = 1;
+int idplayer = 1000;
     // fonction qui resoudre les problems d'espaces avant nom. et mettre le premier caractere en majuscule
 void Majuscule(char str[]) {
-    int i = 0, j = 0,c = 0;
+    int i = 0, j = 0,c = 0, lng = 0;
     while (str[i] == ' ') i++;
     while (str[i]) {
         str[j++] = str[i++];
-        c ++;
-    }
-    while(str[c]){str[c--];}
+    } 
     str[j] = '\0';
     if (str[0] >= 'a' && str[0] <= 'z') {
         str[0] = str[0] - 32;
@@ -51,8 +48,8 @@ void AjouterJoueur(){
 ValidateAj:
     int choix;
     printf("\n--------------------------------------------------\n");
-    printf("\n1.Ajoute simple. \t2.Ajoute multiple.\n");
-    printf("Votre choix : ");
+    printf("1.Ajoute simple. \t2.Ajoute multiple.\n");
+    printf("\nVotre choix : ");
     scanf("%d",&choix);
     getchar();
     printf("\n--------------------------------------------------\n");
@@ -68,9 +65,11 @@ ValidateAj:
         fgets(Equipe[CntJoueur].prenom, sizeof(Equipe[CntJoueur].prenom), stdin);
         Equipe[CntJoueur].prenom[strcspn(Equipe[CntJoueur].prenom, "\n")]= '\0';
         Majuscule(Equipe[CntJoueur].prenom);
-        printf("Entrer le numero de maillot du joueur: ");
-        scanf("%d",&Equipe[CntJoueur].numeroMaillot);
-        getchar();
+        do{
+            printf("Entrer le numero de maillot du joueur: ");
+            scanf("%d",&Equipe[CntJoueur].numeroMaillot);
+            getchar();
+        }while(Equipe[CntJoueur].numeroMaillot < 1);
     valide :
         printf("le poste du joueur : \t1- Gardien \t2- Defenseur \t3- Milieu \t4- Attaquant\n");
         printf("Entrer un choix valide : ");
@@ -96,16 +95,15 @@ ValidateAj:
             break;
         }
         do{
-            printf("Entrer l'age du joueur :");
+            printf("Entrer l'age du joueur (20 - 40) :");
             scanf("%d",&Equipe[CntJoueur].age);
             getchar();
         } while(Equipe[CntJoueur].age < 20 || Equipe[CntJoueur].age > 40);
+        do{
         printf("Entrer le nombre de buts marque par cette joueur :");
         scanf("%d",&Equipe[CntJoueur].buts);
         getchar();
-        time_t now = time(NULL);
-        struct tm *t = localtime(&now);
-        strftime(Equipe[CntJoueur].dateInscription, sizeof(Equipe[CntJoueur]), "%Y-%m-%d", t);
+        }while(Equipe[CntJoueur].buts <=0);
     Vstatus:
         int choix4;
         printf("Entrer la status du joueur:\n");
@@ -116,7 +114,14 @@ ValidateAj:
         switch (choix4)
         {
         case 1:
-            strcpy(Equipe[CntJoueur].status,status1);
+            if(Cnttitulaire < 11){
+                strcpy(Equipe[CntJoueur].status,status2);
+            }
+            else {
+                printf("\nL'equipe a deja 11 joueurs titulaire !\n Joueur entrer en status : remplacant !\n");
+                strcpy(Equipe[CntJoueur].status,status1);
+            }
+            Cnttitulaire ++;
             break;
         case 2:
             strcpy(Equipe[CntJoueur].status,status2);
@@ -145,9 +150,11 @@ ValidateAj:
             fgets(Equipe[CntJoueur].prenom, sizeof(Equipe[CntJoueur].prenom), stdin);
             Equipe[CntJoueur].prenom[strcspn(Equipe[CntJoueur].prenom, "\n")]= '\0';
             Majuscule(Equipe[CntJoueur].prenom);
+            do{
             printf("Entrer le numero de maillot du joueur: ");
             scanf("%d",&Equipe[CntJoueur].numeroMaillot);
             getchar();
+            }while(Equipe[CntJoueur].numeroMaillot < 1);
         valide2 :
             printf("\nle poste du joueur : \t1- Gardien \t2- Defenseur \t3- Milieu \t4- Attaquant\n");
             printf("Entrer un choix valide : ");
@@ -173,17 +180,15 @@ ValidateAj:
                 break;
             }
             do{
-                printf("\nEntrer l'age du joueur :");
+                printf("\nEntrer l'age du joueur (20 - 40):");
                 scanf("%d",&Equipe[CntJoueur].age);
                 getchar();
             } while(Equipe[CntJoueur].age < 20 || Equipe[CntJoueur].age > 40);
-
+            do{
             printf("Entrer le nombre de buts marque par cette joueur :");
             scanf("%d",&Equipe[CntJoueur].buts);
             getchar();
-            time_t now = time(NULL);
-            struct tm *t = localtime(&now);
-            strftime(Equipe[CntJoueur].dateInscription, sizeof(Equipe[CntJoueur]), "%Y-%m-%d", t);
+            }while(Equipe[CntJoueur].buts <=0);
             Equipe[CntJoueur].ID = GenerateurID();
         Status:
             int choix4;
@@ -195,7 +200,14 @@ ValidateAj:
             switch (choix4)
             {
             case 1:
-                strcpy(Equipe[CntJoueur].status,status1);
+                if(Cnttitulaire < 11){
+                strcpy(Equipe[CntJoueur].status,status2);
+                }
+                else {
+                    printf("\nL'equipe a deja 11 joueurs titulaire !\n Joueur entrer en status : remplacant !\n");
+                    strcpy(Equipe[CntJoueur].status,status1);
+                }
+                Cnttitulaire ++;
                 break;
             case 2:
                 strcpy(Equipe[CntJoueur].status,status2);
@@ -208,7 +220,7 @@ ValidateAj:
             CntJoueur ++;
             Addscount ++;
             printf("\n--------------------------------------------------");
-            printf("\n%d Ajoute terminee avec sucess !\n",Addscount +1);
+            printf("\n L'ajoute %d terminee avec success !\n",Addscount );
             printf("--------------------------------------------------\n");
         } while (Addscount < Adds);
 
@@ -256,8 +268,8 @@ validAffichage:
                 printf("\nLes joueurs tries en alphabetique (Ascendent):\n");
                 for (int i = 0; i < CntJoueur; i++){
                      printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription, Equipe[i].status);          
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].status);          
                 }
                 break;
             case 2:
@@ -274,8 +286,8 @@ validAffichage:
                 printf("\nLes joueurs tries en alphabetique (Descendent):\n");
                 for (int i = 0; i < CntJoueur; i++){
                     printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription,  Equipe[i].status);          
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,  Equipe[i].status);          
                 }
                 break;
             default:
@@ -309,8 +321,8 @@ validAffichage:
                 printf("\nLes joueurs tries par age (Croissant):\n");
                 for (int i = 0; i < CntJoueur; i++){
                     printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription, Equipe[i].status);          
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,  Equipe[i].status);          
                     }
                 break;
             case 2:
@@ -327,8 +339,8 @@ validAffichage:
                 printf("\nLes joueurs tries par age (Decroissant):\n");
                 for (int i = 0; i < CntJoueur; i++){
                     printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription, Equipe[i].status);          
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                            Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,Equipe[i].status);          
                 }
                 break;
             default:
@@ -346,8 +358,8 @@ validAffichage:
                 if (strcmp(Equipe[i].poste, poste1)==0)
                 {
                     printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription, Equipe[i].status);
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].status);
                 }
             }
             printf("\n--------------------------------------------------\n");
@@ -357,9 +369,9 @@ validAffichage:
             {
                 if (strcmp(Equipe[i].poste, poste2)==0)
                 {
-                    printf("--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription, Equipe[i].status);
+                    printf("\n--------------------------------------------------\n");
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,Equipe[i].status);
                 }
             }
             printf("\n--------------------------------------------------\n");
@@ -370,8 +382,8 @@ validAffichage:
                 if (strcmp(Equipe[i].poste, poste3)==0)
                 {
                     printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,  Equipe[i].dateInscription, Equipe[i].status);
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,  Equipe[i].status);
                 }
             }
             printf("\n--------------------------------------------------\n");
@@ -382,8 +394,8 @@ validAffichage:
                 if (strcmp(Equipe[i].poste, poste4)==0)
                 {
                     printf("\n--------------------------------------------------\n");
-                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
-                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts, Equipe[i].dateInscription, Equipe[i].status);
+                    printf("ID : %d\nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s", Equipe[i].ID,Equipe[i].nom,
+                    Equipe[i].prenom, Equipe[i].numeroMaillot,Equipe[i].poste, Equipe[i].age,Equipe[i].buts,  Equipe[i].status);
                 }
             }
             break;
@@ -401,7 +413,7 @@ void ModifierJoueur(){
         int choix02;
         do{
         printf("\n1- Modifier le poste d'un joueur.");
-        printf("\n2- Modifier l'âge d'un joueur.");
+        printf("\n2- Modifier l'age d'un joueur.");
         printf("\n3- Modifier le nombre de buts marques par un joueur.\n");
         printf("Entrer votre choix:");
         scanf("%d",&choix02);       // choix de modification
@@ -429,8 +441,8 @@ void ModifierJoueur(){
             {
                 int index = RechJ[i];
                 printf("\n--------------------------------------------------\n");
-                printf("joueur Numero %d :\n ID : %d \nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %s\nStatus : %s",i+1, Equipe[index].ID, Equipe[index].nom,
-                        Equipe[index].prenom, Equipe[index].numeroMaillot,Equipe[index].poste, Equipe[index].age, Equipe[index].buts, Equipe[index].dateInscription, Equipe[index].status);
+                printf("joueur Numero %d :\n ID : %d \nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nStatus : %s",i+1, Equipe[index].ID, Equipe[index].nom,
+                        Equipe[index].prenom, Equipe[index].numeroMaillot,Equipe[index].poste, Equipe[index].age, Equipe[index].buts,  Equipe[index].status);
             }
             int choix03;
             do {
@@ -470,9 +482,11 @@ void ModifierJoueur(){
                     printf("Poste modifie avec success !\n");
                     break;
                 case 2:
-                    printf("\nEntrer le nouveau age :");
-                    scanf("%d",&Equipe[choix03].age);
-                    getchar();
+                    do{
+                        printf("\nEntrer le nouveau age :");
+                        scanf("%d",&Equipe[choix03].age);
+                        getchar();
+                    }while(Equipe[choix03].age  < 20 || Equipe[choix03].age  > 40);
                     printf("Age modifie avec success !\n");
                 break;
                 case 3:
@@ -481,14 +495,6 @@ void ModifierJoueur(){
                     getchar();
                     break;
             }
-        invalide:
-            char repeat;
-            printf("Essayer a nouveau ? (o/n):");// o: oui, n: non
-            scanf("%c",&repeat);
-            getchar();
-            if(repeat == 'o'){goto repeat;}
-            else if(repeat == 'n'){ }// si non , sortir de la fonction
-            else{goto invalide;}
         }
     }
 }
@@ -521,7 +527,7 @@ void supprimerJoueur(){
             switch (choix002)
             {
             case 1:
-                for (int i = exist - 1; i < CntJoueur - 1; i++)
+                for (int i = exist; i < CntJoueur - 1; i++)
                 {
                     Equipe[i]=Equipe[i + 1];
                 }
@@ -558,7 +564,7 @@ void rechercheJoueur(){
             printf("Entrer l'identifient du joueur a rechercher :");
             scanf("%d",&IDrech);
             getchar();
-            int IDindex ;
+            int IDindex = -1;
             for (int i = 0; i < CntJoueur; i++){
                 if (Equipe[i].ID == IDrech)
                 {
@@ -579,7 +585,6 @@ void rechercheJoueur(){
                 printf("Poste : %s\n",Equipe[IDindex].poste);
                 printf("Age : %d\n",Equipe[IDindex].age);
                 printf("Nombre des buts marque : %d\n",Equipe[IDindex].buts);
-                printf("Date d'inscription : %s\n",Equipe[IDindex].dateInscription);
                 printf("Status : %s\n",Equipe[IDindex].status);
                 printf("--------------------------------------------------\n");
             }
@@ -589,7 +594,7 @@ void rechercheJoueur(){
             fgets(rechercheJ, sizeof(rechercheJ), stdin);
             rechercheJ[strcspn(rechercheJ, "\n")]='\0';
             Majuscule(rechercheJ);
-            int NomIndex;
+            int NomIndex = -1;
             for (int  i = 0; i < CntJoueur; i++)
             {
                 if (strcmp(Equipe[i].nom, rechercheJ)== 0)
@@ -611,7 +616,6 @@ void rechercheJoueur(){
                 printf("Poste : %s\n",Equipe[NomIndex].poste);
                 printf("Age : %d\n",Equipe[NomIndex].age);
                 printf("Nombre des buts marque : %d\n",Equipe[NomIndex].buts);
-                printf("Date d'inscription : %d %d %d \n",Equipe[NomIndex].dateInscription);
                 printf("Status : %s\n",Equipe[NomIndex].status);
                 printf("--------------------------------------------------\n");
             }
@@ -624,16 +628,16 @@ void rechercheJoueur(){
 }
     // les fonctions des statistiques
 void AfficheNbrtotale(){
-        printf("\nLe nombre totale des joueurs dans l'equipe est : %d\n", CntJoueur + 1);
+        printf("\nLe nombre totale des joueurs dans l'equipe est : %d\n", CntJoueur);
 }
 void Agemoyenne(){
     int SommeAge = 0;
-    float AgeMoyenne;
+    int AgeMoyenne;
     for (int i = 0; i < CntJoueur; i++){
         SommeAge += Equipe[i].age;
     }
-    AgeMoyenne = SommeAge/ (CntJoueur + 1);
-    printf("\nAfficher l'age moyen des joueurs :%.2f \n",AgeMoyenne);
+    AgeMoyenne = SommeAge/ (CntJoueur);
+    printf("\nl'age moyenne des joueurs est:%d \n",AgeMoyenne);
 }
 void FiltrerParButs(){
     int nbrButs;
@@ -648,21 +652,22 @@ void FiltrerParButs(){
         }
     }
     if (j == 0){
-        printf("\nAucun joueur a marque plus de %d Buts",nbrButs);
+        printf("\nAucun joueur a marque plus de %d Buts !\n",nbrButs);
     }
     else{
         int index;
         printf("Les joueurs ayant marque plus de %d buts sont :\n");
         for (int i = 0; i < j; i++){
              index = Butsfiltr[i];
-            printf("ID : %d\tNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %s\tStatus : %s\n",
-            Equipe[index].ID, Equipe[index].nom, Equipe[index].prenom, Equipe[index].numeroMaillot, Equipe[index].poste, Equipe[index].age, Equipe[index].buts, Equipe[index].dateInscription, Equipe[index].status);
+            printf("--------------------------------------------------\n");
+            printf("ID : %d\nNom : %s\nPrenom : %s\nNumero maillot : %d\nPoste : %s\nAge : %d\nButs : %d\nStatus : %s\n",
+            Equipe[index].ID, Equipe[index].nom, Equipe[index].prenom, Equipe[index].numeroMaillot, Equipe[index].poste, Equipe[index].age, Equipe[index].buts,Equipe[index].status);
         }
     }
 }
 void MeilleurButeur(){
     int Meilleur;
-    int Meilleurindex = -1;
+    int Meilleurindex = 0;
     Meilleur = Equipe[0].buts;
     for (int i = 0; i < CntJoueur; i++){
         if (Meilleur < Equipe[i].buts){
@@ -672,39 +677,50 @@ void MeilleurButeur(){
     }
     if (Meilleurindex != -1){
 
-        printf("\nLe le Meilleur Buteurs d'equipe est :\nID : %d\tNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %s\tStatus : %s\n", 
-         Equipe[Meilleurindex].ID, Equipe[Meilleurindex].nom, Equipe[Meilleurindex].prenom, Equipe[Meilleurindex].numeroMaillot, Equipe[Meilleurindex].poste, Equipe[Meilleurindex].age, Equipe[Meilleurindex].buts, Equipe[Meilleurindex].dateInscription, Equipe[Meilleurindex].status);
+        printf("\nLe le Meilleur Buteurs d'equipe est :\nID : %d\nNom : %s\nPrenom : %s\nNumero maillot : %d\nPoste : %s\nAge : %d\nButs : %d\nStatus : %s\n", 
+         Equipe[Meilleurindex].ID, Equipe[Meilleurindex].nom, Equipe[Meilleurindex].prenom, Equipe[Meilleurindex].numeroMaillot, Equipe[Meilleurindex].poste, Equipe[Meilleurindex].age, Equipe[Meilleurindex].buts, Equipe[Meilleurindex].status);
     }
 }
-void MinMaxAge(){
-    if (CntJoueur > 0){
-        int Jeune = Equipe[0].age; // plus jeune 
-        int Age = Equipe[0].age; // plus age
-        int Jeuneindex= -1, Ageindex = -1;
-        for (int i = 0; i < CntJoueur; i++){
-            if ( Jeune > Equipe[i].age){
+void MinMaxAge() {
+    if (CntJoueur > 0) {
+        int Jeune = Equipe[0].age;
+        int Age = Equipe[0].age;
+        int Jeuneindex = 0, Ageindex = 0;
+
+        for (int i = 1; i < CntJoueur; i++) {
+            if (Equipe[i].age < Jeune) {
                 Jeune = Equipe[i].age;
                 Jeuneindex = i;
             }
-            if (Age < Equipe[i].age){
+            if (Equipe[i].age > Age) {
                 Age = Equipe[i].age;
                 Ageindex = i;
             }
         }
-        if(Jeuneindex != -1 && Ageindex != -1){
-            if(Jeuneindex != Ageindex){
-                printf("Le joueur le plus jeune est : \nNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %s\tStatus : %s\n", 
-                Equipe[Jeuneindex].ID, Equipe[Jeuneindex].nom, Equipe[Jeuneindex].prenom, Equipe[Jeuneindex].numeroMaillot, Equipe[Jeuneindex].poste, Equipe[Jeuneindex].age, Equipe[Jeuneindex].buts, Equipe[Jeuneindex].dateInscription, Equipe[Jeuneindex].status);
-                printf("Le joueur le plus age est : \nNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %s\tStatus : %s\n", 
-                Equipe[Ageindex].ID, Equipe[Ageindex].nom, Equipe[Ageindex].prenom, Equipe[Ageindex].numeroMaillot, Equipe[Ageindex].poste, Equipe[Ageindex].age, Equipe[Ageindex].buts, Equipe[Ageindex].dateInscription, Equipe[Ageindex].status);            
-            }
-            else{
-                printf("Une seul joueurs est enregistre !\n");
-                printf("Nom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %s\tStatus : %s\n", 
-                Equipe[Ageindex].ID, Equipe[Ageindex].nom, Equipe[Ageindex].prenom, Equipe[Ageindex].numeroMaillot, Equipe[Ageindex].poste, Equipe[Ageindex].age, Equipe[Ageindex].buts, Equipe[Ageindex].dateInscription, Equipe[Ageindex].status);            
-                printf("--------------------------------------------------\n");
-            }
+
+        printf("\n--------------------------------------------------\n");
+
+        if (Jeuneindex != Ageindex) {
+            printf("Le joueur le plus jeune est : \nID: %d\nNom : %s\nPrenom : %s\nNumero maillot : %d\nPoste : %s\nAge : %d\nButs : %d\nStatus : %s\n\n",
+                Equipe[Jeuneindex].ID, Equipe[Jeuneindex].nom, Equipe[Jeuneindex].prenom,
+                Equipe[Jeuneindex].numeroMaillot, Equipe[Jeuneindex].poste, Equipe[Jeuneindex].age,
+                Equipe[Jeuneindex].buts, Equipe[Jeuneindex].status);
+                printf("\n--------------------------------------------------\n");
+            printf("Le joueur le plus age est : \nID: %d\nNom : %s\nPrenom : %s\nNumero maillot : %d\nPoste : %s\nAge : %d\nButs : %d\nStatus : %s\n",
+                Equipe[Ageindex].ID, Equipe[Ageindex].nom, Equipe[Ageindex].prenom,
+                Equipe[Ageindex].numeroMaillot, Equipe[Ageindex].poste, Equipe[Ageindex].age,
+                Equipe[Ageindex].buts, Equipe[Ageindex].status);
+        } else {
+            printf("Un seul joueur enregistré !\n");
+            printf("ID : %d\nNom : %s\nPrenom : %s\nNumero maillot : %d\nPoste : %s\nAge : %d\nButs : %d\nStatus : %s\n",
+                Equipe[Ageindex].ID, Equipe[Ageindex].nom, Equipe[Ageindex].prenom,
+                Equipe[Ageindex].numeroMaillot, Equipe[Ageindex].poste, Equipe[Ageindex].age,
+                Equipe[Ageindex].buts, Equipe[Ageindex].status);
         }
+
+        printf("--------------------------------------------------\n");
+    } else {
+        printf("Aucun joueur enregistré.\n");
     }
 }
 void MenuPrincipale();
@@ -760,33 +776,35 @@ void MenuPrincipale(){
         printf("\t1- Ajouter un joueur.\n");
         printf("\t2- Afficher la liste de tous les joueurs.\n");
         printf("\t3- Modifier un joueur.\n");
-        printf("\t4- Rechercher un joueur.\n");
-        printf("\t5- Entrer au menu des statistiques.\n"); 
-        printf("\t6- Termine le program\n");
+        printf("\t4- Supprimer un joueur.\n");
+        printf("\t5- Rechercher un joueur.\n");
+        printf("\t6- Entrer au menu des statistiques.\n"); 
+        printf("\t0- Termine le program\n");
         printf("--------------------------------------------------\n");
         printf("Entrer votre choix :");
         scanf("%d",&MenuChoix);
         getchar();
+        system("cls");
         switch (MenuChoix)
         {
+        case 0:
+            break;
         case 1:
-            system("cls");
             AjouterJoueur();
             break;
         case 2:
-            system("cls");
             AfficherListe();
             break;
         case 3:
-            system("cls");
             ModifierJoueur();
             break;
         case 4:
-            system("cls");
-            rechercheJoueur();
+            supprimerJoueur();
             break;
         case 5:
-            system("cls");
+            rechercheJoueur();
+            break;
+        case 6:
             MenuStatistiques();
             break;
         default:
@@ -797,17 +815,18 @@ void MenuPrincipale(){
 }
 int main(){
 // fake data dor testing 
-/*
-Equipe[CntJoueur++] = (Player){1011, "Benali", "Amine", 1, poste1, 30, 0, 12-12-200, status1};
-Equipe[CntJoueur++] = (Player){1002, "El Idrissi", "Youssef", 2, poste2, 28, 1, {5, 2, 2019}, status1};
-Equipe[CntJoueur++] = (Player){1003, "Zouhair", "Sami", 3, poste2, 25, 2, {20, 7, 2021}, status2};
-Equipe[CntJoueur++] = (Player){1004, "Karim", "Taha", 8, poste2, 29, 1, {18, 11, 2019}, status1};
-Equipe[CntJoueur++] = (Player){1005, "Omar", "Rachid", 4, poste3, 27, 5, {1, 1, 2018}, status1};
-Equipe[CntJoueur++] = (Player){1006, "Omar", "Karim", 5, poste3, 24, 3, {15, 3, 2022}, status2};
-Equipe[CntJoueur++] = (Player){1007, "Yassir", "Amar", 9, poste3, 22, 4, {30, 6, 2022}, status2};
-Equipe[CntJoueur++] = (Player){1008, "Nabil", "Ayoub", 6, poste4, 26, 10, {10, 5, 2020}, status1};
-Equipe[CntJoueur++] = (Player){1009, "Rania", "Salma", 7, poste4, 23, 7, {2, 9, 2021}, status2};
-Equipe[CntJoueur++] = (Player){1010, "Leila", "Meriem", 10, poste4, 21, 6, {12, 12, 2021}, status1};*/
+
+Equipe[CntJoueur++] = (Player){1001, "Benali", "Amine", 1, poste1, 30, 0, status1};
+Equipe[CntJoueur++] = (Player){1002, "El Idrissi", "Youssef", 2, poste2, 28, 1, status1};
+Equipe[CntJoueur++] = (Player){1003, "Zouhair", "Sami", 3, poste2, 25, 2, status2};
+Equipe[CntJoueur++] = (Player){1004, "Karim", "Taha", 4, poste2, 29, 1, status1};
+Equipe[CntJoueur++] = (Player){1005, "Omar", "Rachid", 5, poste3, 27, 5, status1};
+Equipe[CntJoueur++] = (Player){1006, "Omar", "Karim", 6, poste3, 24, 3, status2};
+Equipe[CntJoueur++] = (Player){1007, "Yassir", "Amar", 7, poste3, 22, 4, status2};
+Equipe[CntJoueur++] = (Player){1008, "Nabil", "Ayoub", 8, poste4, 26, 10, status1};
+Equipe[CntJoueur++] = (Player){1009, "Rania", "Salma", 9, poste4, 23, 7, status2};
+Equipe[CntJoueur++] = (Player){1010, "Leila", "Meriem", 10, poste4, 21, 6, status1};
+
 
 MenuPrincipale();
     return 0;
