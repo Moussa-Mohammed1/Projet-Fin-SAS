@@ -441,11 +441,11 @@ void ModifierJoueur(){
         else
         {
             printf("\nLes Joueurs correspond au ce nom est : %d",j);
-            for(int i = j - 1; i>=0 ; i--)
+            for(int i = 0; i < j ; i++)
             {
                 int index = RechJ[i];
                 printf("\n--------------------------------------------------\n");
-                printf("joueur Numero %d :\n ID : %d \nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %d %d %d\nStatus : %s",(-1)*(i-j), Equipe[index].ID, Equipe[index].nom,
+                printf("joueur Numero %d :\n ID : %d \nNom et prenom : %s %s\nNumero Maillot : %d\nPoste : %s\nAge : %d\nButs Marque: %d\nDate d'inscription: %d %d %d\nStatus : %s",i+1, Equipe[index].ID, Equipe[index].nom,
                         Equipe[index].prenom, Equipe[index].numeroMaillot,Equipe[index].poste, Equipe[index].age, Equipe[index].buts, Equipe[index].dateInscription.day, Equipe[index].dateInscription.mounth, Equipe[index].dateInscription.year, Equipe[index].status);
             }
             int choix03;
@@ -638,14 +638,9 @@ void rechercheJoueur(){
         }
     }
 }
+    // les fonctions des statistiques
 void AfficheNbrtotale(){
-    if(CntJoueur == 0)
-    {
-        printf("\nAucun joueur dans l'equipe !\n");
-    }
-    else{
         printf("\nLe nombre totale des joueurs dans l'equipe est : %d\n", CntJoueur + 1);
-    }
 }
 void Agemoyenne(){
     int SommeAge = 0;
@@ -657,7 +652,122 @@ void Agemoyenne(){
     printf("\nAfficher l'age moyen des joueurs :%.2f \n",AgeMoyenne);
 }
 void FiltrerParButs(){
-    
+    int nbrButs;
+    int Butsfiltr[100];
+    int j = 0;
+    printf("Entrer le nombre des buts que vous voulez filtrer les joueurs par :");
+    scanf("%d",&nbrButs);
+    for (int i = 0; i < CntJoueur; i++){
+        if (Equipe[i].buts > nbrButs){
+            Butsfiltr[j] =i;
+            j++;
+        }
+    }
+    if (j == 0){
+        printf("\nAucun joueur a marque plus de %d Buts",nbrButs);
+    }
+    else{
+        int index;
+        printf("Les joueurs ayant marque plus de %d buts sont :\n");
+        for (int i = 0; i < j; i++){
+             index = Butsfiltr[i];
+            printf("ID : %d\tNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %d %d %d\tStatus : %s\n",
+            Equipe[index].ID, Equipe[index].nom, Equipe[index].prenom, Equipe[index].numeroMaillot, Equipe[index].poste, Equipe[index].age, Equipe[index].buts, Equipe[index].dateInscription.day, Equipe[index].dateInscription.mounth, Equipe[index].dateInscription.year, Equipe[index].status);
+        }
+    }
+}
+void MeilleurButeur(){
+    int Meilleur;
+    int Meilleurindex = -1;
+    Meilleur = Equipe[0].buts;
+    for (int i = 0; i < CntJoueur; i++){
+        if (Meilleur < Equipe[i].buts){
+            Meilleur = Equipe[i].buts;
+            Meilleurindex = i;
+        }
+    }
+    if (Meilleurindex != -1){
+
+        printf("\nLe le Meilleur Buteurs d'equipe est :\nID : %d\tNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %d %d %d\tStatus : %s\n", 
+         Equipe[Meilleurindex].ID, Equipe[Meilleurindex].nom, Equipe[Meilleurindex].prenom, Equipe[Meilleurindex].numeroMaillot, Equipe[Meilleurindex].poste, Equipe[Meilleurindex].age, Equipe[Meilleurindex].buts, Equipe[Meilleurindex].dateInscription.day, Equipe[Meilleurindex].dateInscription.mounth, Equipe[Meilleurindex].dateInscription.year, Equipe[Meilleurindex].status);
+    }
+}
+void MinMaxAge(){
+    if (CntJoueur > 0){
+        int Jeune = Equipe[0].age; // plus jeune 
+        int Age = Equipe[0].age; // plus age
+        int Jeuneindex= -1, Ageindex = -1;
+        for (int i = 0; i < CntJoueur; i++){
+            if ( Jeune > Equipe[i].age){
+                Jeune = Equipe[i].age;
+                Jeuneindex = i;
+            }
+            if (Age < Equipe[i].age){
+                Age = Equipe[i].age;
+                Ageindex = i;
+            }
+        }
+        if(Jeuneindex != -1 && Ageindex != -1){
+            if(Jeuneindex != Ageindex){
+                printf("Le joueur le plus jeune est : \nNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %d %d %d\tStatus : %s\n", 
+                Equipe[Jeuneindex].ID, Equipe[Jeuneindex].nom, Equipe[Jeuneindex].prenom, Equipe[Jeuneindex].numeroMaillot, Equipe[Jeuneindex].poste, Equipe[Jeuneindex].age, Equipe[Jeuneindex].buts, Equipe[Jeuneindex].dateInscription.day, Equipe[Jeuneindex].dateInscription.mounth, Equipe[Jeuneindex].dateInscription.year, Equipe[Jeuneindex].status);
+                printf("Le joueur le plus age est : \nNom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %d %d %d\tStatus : %s\n", 
+                Equipe[Ageindex].ID, Equipe[Ageindex].nom, Equipe[Ageindex].prenom, Equipe[Ageindex].numeroMaillot, Equipe[Ageindex].poste, Equipe[Ageindex].age, Equipe[Ageindex].buts, Equipe[Ageindex].dateInscription.day, Equipe[Ageindex].dateInscription.mounth, Equipe[Ageindex].dateInscription.year, Equipe[Ageindex].status);            
+            }
+            else{
+                printf("Une seul joueurs est enregistre !\n");
+                printf("Nom : %s\tPrenom : %s\tNumero maillot : %d\tPoste : %s\tAge : %d\tButs : %d\tDate d'inscription : %d %d %d\tStatus : %s\n", 
+                Equipe[Ageindex].ID, Equipe[Ageindex].nom, Equipe[Ageindex].prenom, Equipe[Ageindex].numeroMaillot, Equipe[Ageindex].poste, Equipe[Ageindex].age, Equipe[Ageindex].buts, Equipe[Ageindex].dateInscription.day, Equipe[Ageindex].dateInscription.mounth, Equipe[Ageindex].dateInscription.year, Equipe[Ageindex].status);            
+                printf("--------------------------------------------------\n");
+            }
+        }
+    }
+}
+
+void MenuStatistiques(){
+    statistique:
+    int choixstatistique;
+    printf("\n-----------------------------Statistique Menu-----------------------------\n");
+    printf("\t1 -Afficher le nombre total de joueurs dans l'equipe.\n");
+    printf("\t2- Afficher l'age moyen des joueurs.\n");
+    printf("\t3- Afficher les joueurs ayant marque plus de X buts (X introduit par l'utilisateur).\n");
+    printf("\t4- Afficher le meilleur buteur (joueur avec le maximum de buts).\n");
+    printf("\t5- Afficher le joueur le plus jeune et le plus age.\n");
+    printf("\t6- Return au menu.\n");
+    printf("\n Votre choix : ");
+    scanf("%d",&choixstatistique);
+    getchar();
+    switch (choixstatistique)
+    {
+    case 1:
+        system("cls");
+        AfficheNbrtotale();
+        break;
+    case 2:
+        system("cls");
+        Agemoyenne();
+        break;
+    case 3:
+        system("cls");
+        FiltrerParButs();
+        break;
+    case 4:
+        system("cls");
+        MeilleurButeur();
+        break;
+    case 5:
+        system("cls");
+        MinMaxAge();
+        break;
+    case 6:
+        system("cls");
+        main();
+        break;
+    default:
+        printf("\nChoix invalide !\n");
+        goto statistique;
+        break;
+    }
 }
 int main(){
 // fake data dor testing
@@ -671,9 +781,9 @@ Equipe[CntJoueur++] = (Player){1007, "Yassir", "Amar", 9, poste3, 22, 4, {30, 6,
 Equipe[CntJoueur++] = (Player){1008, "Nabil", "Ayoub", 6, poste4, 26, 10, {10, 5, 2020}, status1};
 Equipe[CntJoueur++] = (Player){1009, "Rania", "Salma", 7, poste4, 23, 7, {2, 9, 2021}, status2};
 Equipe[CntJoueur++] = (Player){1010, "Leila", "Meriem", 10, poste4, 21, 6, {12, 12, 2021}, status1};
-rechercheJoueur();
-supprimerJoueur();
-AjouterJoueur();
+
+
+
 ModifierJoueur();
 AfficherListe();
     return 0;
