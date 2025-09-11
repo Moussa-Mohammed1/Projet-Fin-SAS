@@ -707,7 +707,7 @@ void MinMaxAge(){
         }
     }
 }
-int main();
+void MenuPrincipale();
 void MenuStatistiques(){
     statistique:
     int choixstatistique;
@@ -745,7 +745,7 @@ void MenuStatistiques(){
         break;
     case 6:
         system("cls");
-        main();
+        MenuPrincipale();
         break;
     default:
         printf("\nChoix invalide !\n");
