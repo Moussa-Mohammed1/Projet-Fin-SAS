@@ -816,18 +816,106 @@ void MenuPrincipale(){
 int main(){
 // fake data dor testing 
 
-Equipe[CntJoueur++] = (Player){1001, "Benali", "Amine", 1, poste1, 30, 0, status1};
-Equipe[CntJoueur++] = (Player){1002, "El Idrissi", "Youssef", 2, poste2, 28, 1, status1};
-Equipe[CntJoueur++] = (Player){1003, "Zouhair", "Sami", 3, poste2, 25, 2, status2};
-Equipe[CntJoueur++] = (Player){1004, "Karim", "Taha", 4, poste2, 29, 1, status1};
-Equipe[CntJoueur++] = (Player){1005, "Omar", "Rachid", 5, poste3, 27, 5, status1};
-Equipe[CntJoueur++] = (Player){1006, "Omar", "Karim", 6, poste3, 24, 3, status2};
-Equipe[CntJoueur++] = (Player){1007, "Yassir", "Amar", 7, poste3, 22, 4, status2};
-Equipe[CntJoueur++] = (Player){1008, "Nabil", "Ayoub", 8, poste4, 26, 10, status1};
-Equipe[CntJoueur++] = (Player){1009, "Rania", "Salma", 9, poste4, 23, 7, status2};
-Equipe[CntJoueur++] = (Player){1010, "Leila", "Meriem", 10, poste4, 21, 6, status1};
+    Equipe[0].ID = 106;
+    strcpy(Equipe[0].nom, "lahrech");
+    strcpy(Equipe[0].prenom, "El mahdi");
+    Equipe[0].numeroMaillot = 7;
+    strcpy(Equipe[0].poste, "Attaquant");
+    Equipe[0].age = 25;
+    Equipe[0].buts = 103;
+    strcpy(Equipe[0].status, "Titulaire");
+    CntJoueur++;
 
+    Equipe[1].ID = 102;
+    strcpy(Equipe[1].nom, "abdelhadi");
+    strcpy(Equipe[1].prenom, "Elkabli");
+    Equipe[1].numeroMaillot = 10;
+    strcpy(Equipe[1].poste, "Milieu");
+    Equipe[1].age = 23;
+    Equipe[1].buts = 78;
+    strcpy(Equipe[1].status, "Remplacent");
+    CntJoueur++;
 
-MenuPrincipale();
+    Equipe[2].ID = 133;
+    strcpy(Equipe[2].nom, "Omar");
+    strcpy(Equipe[2].prenom, "Al Ayoubi");
+    Equipe[2].numeroMaillot = 4;
+    strcpy(Equipe[2].poste, "Defenseur");
+    Equipe[2].age = 26;
+    Equipe[2].buts = 89;
+    strcpy(Equipe[2].status, "Titulaire");
+    CntJoueur++;
+
+    Equipe[3].ID = 104;
+    strcpy(Equipe[3].nom, "Yassir");
+    strcpy(Equipe[3].prenom, "Lazreq");
+    Equipe[3].numeroMaillot = 1;
+    strcpy(Equipe[3].poste, "Gardien");
+    Equipe[3].age = 22;
+    Equipe[3].buts = 100;
+    strcpy(Equipe[3].status, "Titulaire");
+    CntJoueur++;
+
+    Equipe[4].ID = 111;
+    strcpy(Equipe[4].nom, "Youssef");
+    strcpy(Equipe[4].prenom, "Ebrahimi");
+    Equipe[4].numeroMaillot = 11;
+    strcpy(Equipe[4].poste, "Attaquant");
+    Equipe[4].age = 25;
+    Equipe[4].buts = 88;
+    strcpy(Equipe[4].status, "Remplacent");
+    CntJoueur++;
+
+    Equipe[5].ID = 110;
+    strcpy(Equipe[5].nom, "Mohammed");
+    strcpy(Equipe[5].prenom, "Moussa");
+    Equipe[5].numeroMaillot = 8;
+    strcpy(Equipe[5].poste, "Milieu");
+    Equipe[5].age = 20;
+    Equipe[5].buts = 103;
+    strcpy(Equipe[5].status, "Titulaire");
+    CntJoueur++;
+
+    Equipe[6].ID = 189;
+    strcpy(Equipe[6].nom, "Karim");
+    strcpy(Equipe[6].prenom, "Mahdi");
+    Equipe[6].numeroMaillot = 5;
+    strcpy(Equipe[6].poste, "Defenseur");
+    Equipe[6].age = 23;
+    Equipe[6].buts = 73;
+    strcpy(Equipe[6].status, "Remplacent");
+    CntJoueur++;
+
+    Equipe[7].ID = 188;
+    strcpy(Equipe[7].nom, "Hamza");
+    strcpy(Equipe[7].prenom, "Al Aimar");
+    Equipe[7].numeroMaillot = 9;
+    strcpy(Equipe[7].poste, "Attaquant");
+    Equipe[7].age = 24;
+    Equipe[7].buts = 33;
+    strcpy(Equipe[7].status, "Titulaire");
+    CntJoueur++;
+
+    Equipe[8].ID = 189;
+    strcpy(Equipe[8].nom, "Amine");
+    strcpy(Equipe[8].prenom, "Hachimi");
+    Equipe[8].numeroMaillot = 3;
+    strcpy(Equipe[8].poste, "Defenseur");
+    Equipe[8].age = 25;
+    Equipe[8].buts = 70;
+    strcpy(Equipe[8].status, "Remplacent");
+    CntJoueur++;
+
+    Equipe[9].ID = 123;
+    strcpy(Equipe[9].nom, "Nidal");
+    strcpy(Equipe[9].prenom, "Lakhal");
+    Equipe[9].numeroMaillot = 2;
+    strcpy(Equipe[9].poste, "Milieu");
+    Equipe[9].age = 22;
+    Equipe[9].buts = 4;
+    strcpy(Equipe[9].status, "Titulaire");
+    CntJoueur++;
+
+    MenuPrincipale();
     return 0;
 }
