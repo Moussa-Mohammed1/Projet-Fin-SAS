@@ -38,8 +38,6 @@ Fonctionnalités principales:
 		- Calcul du nombre total de joueurs dans l’équipe.
 
 		- Calcul de l’âge moyen des joueurs.
-
-		- Suivi du nombre total de buts marqués par chaque joueur et par l’équipe.
 	
 		- Afficher les joueurs ayant marqué plus de X buts (X introduit par l’utilisateur).
 
