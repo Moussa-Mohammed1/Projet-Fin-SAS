@@ -199,15 +199,16 @@ ValidateAj:
             getchar();
             switch (choix4)
             {
-            case 1:
+            case 1: 
                 if(Cnttitulaire < 11){
-                strcpy(Equipe[CntJoueur].status,status2);
-                }
-                else {
+                    strcpy(Equipe[CntJoueur].status,status1);   
+                    Cnttitulaire ++;
+                } else {
                     printf("\nL'equipe a deja 11 joueurs titulaire !\n Joueur entrer en status : remplacant !\n");
-                    strcpy(Equipe[CntJoueur].status,status1);
+                    strcpy(Equipe[CntJoueur].status,status2);   
                 }
-                Cnttitulaire ++;
+                break;
+    
                 break;
             case 2:
                 strcpy(Equipe[CntJoueur].status,status2);
@@ -484,14 +485,14 @@ void ModifierJoueur(){
                 case 2:
                     do{
                         printf("\nEntrer le nouveau age :");
-                        scanf("%d",&Equipe[choix03].age);
+                        scanf("%d",&Equipe[indexJoueur].age);
                         getchar();
                     }while(Equipe[choix03].age  < 20 || Equipe[choix03].age  > 40);
                     printf("Age modifie avec success !\n");
                 break;
                 case 3:
                     printf("\nEntrer le nouveau nombre des buts du joueurs :");
-                    scanf("%d",&Equipe[choix03].buts);
+                    scanf("%d",&Equipe[indexJoueur].buts);
                     getchar();
                     break;
             }
@@ -631,13 +632,16 @@ void AfficheNbrtotale(){
         printf("\nLe nombre totale des joueurs dans l'equipe est : %d\n", CntJoueur);
 }
 void Agemoyenne(){
-    int SommeAge = 0;
-    int AgeMoyenne;
-    for (int i = 0; i < CntJoueur; i++){
-        SommeAge += Equipe[i].age;
+    if(CntJoueur > 0){
+        int SommeAge = 0;
+        int AgeMoyenne;
+        for (int i = 0; i < CntJoueur; i++){
+            SommeAge += Equipe[i].age;
+        }
+        AgeMoyenne = SommeAge/ (CntJoueur);
+        
+        printf("\nl'age moyenne des joueurs est:%d \n",AgeMoyenne);
     }
-    AgeMoyenne = SommeAge/ (CntJoueur);
-    printf("\nl'age moyenne des joueurs est:%d \n",AgeMoyenne);
 }
 void FiltrerParButs(){
     int nbrButs;
@@ -656,7 +660,7 @@ void FiltrerParButs(){
     }
     else{
         int index;
-        printf("Les joueurs ayant marque plus de %d buts sont :\n");
+        printf("Les joueurs ayant marque plus de %d buts sont :\n",nbrButs);
         for (int i = 0; i < j; i++){
              index = Butsfiltr[i];
             printf("--------------------------------------------------\n");
@@ -668,14 +672,16 @@ void FiltrerParButs(){
 void MeilleurButeur(){
     int Meilleur;
     int Meilleurindex = 0;
+    int found =0;
     Meilleur = Equipe[0].buts;
     for (int i = 0; i < CntJoueur; i++){
         if (Meilleur < Equipe[i].buts){
             Meilleur = Equipe[i].buts;
             Meilleurindex = i;
+            found =1;
         }
     }
-    if (Meilleurindex != -1){
+    if (!found){
 
         printf("\nLe le Meilleur Buteurs d'equipe est :\nID : %d\nNom : %s\nPrenom : %s\nNumero maillot : %d\nPoste : %s\nAge : %d\nButs : %d\nStatus : %s\n", 
          Equipe[Meilleurindex].ID, Equipe[Meilleurindex].nom, Equipe[Meilleurindex].prenom, Equipe[Meilleurindex].numeroMaillot, Equipe[Meilleurindex].poste, Equipe[Meilleurindex].age, Equipe[Meilleurindex].buts, Equipe[Meilleurindex].status);
@@ -784,33 +790,39 @@ void MenuPrincipale(){
         printf("Entrer votre choix :");
         scanf("%d",&MenuChoix);
         getchar();
-        system("cls");
+        
         switch (MenuChoix)
         {
         case 0:
             break;
         case 1:
+            system("cls");
             AjouterJoueur();
             break;
         case 2:
+            system("cls");
             AfficherListe();
             break;
         case 3:
+            system("cls");
             ModifierJoueur();
             break;
         case 4:
+            system("cls");
             supprimerJoueur();
             break;
         case 5:
+            system("cls");
             rechercheJoueur();
             break;
         case 6:
+            system("cls");
             MenuStatistiques();
             break;
         default:
             printf("\nchoix invalide!");
         }
-    }while(MenuChoix != 6);
+    }while(MenuChoix != 0);
 
 }
 int main(){
